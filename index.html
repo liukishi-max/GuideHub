@@ -831,6 +831,7 @@ function renderDayPhoto(d){
         const day = days.find(x=>x.id==d.id);
         day.img = await fileToCompressedDataURL(file, 900, 0.72);
         renderDayPhoto(day);
+        scheduleAutoSave();
       }catch(err){}
     });
   }
@@ -840,6 +841,7 @@ function renderDayPhoto(d){
       const day = days.find(x=>x.id==d.id);
       day.img = null;
       renderDayPhoto(day);
+      scheduleAutoSave();
     });
   }
 }
@@ -868,9 +870,13 @@ document.getElementById('coverPhotoInput').addEventListener('change', async e=>{
   try{
     const dataUrl = await fileToCompressedDataURL(file, 1000, 0.75);
     setCoverPhoto(dataUrl);
+    scheduleAutoSave();
   }catch(err){}
 });
-document.getElementById('coverPhotoRemove').addEventListener('click', ()=> setCoverPhoto(null));
+document.getElementById('coverPhotoRemove').addEventListener('click', ()=>{
+  setCoverPhoto(null);
+  scheduleAutoSave();
+});
 
 function autoresize(ta){
   ta.style.height = 'auto';
@@ -1094,6 +1100,7 @@ function bindDayEvents(){
     btn.addEventListener('click', e=>{
       days = days.filter(x=>x.id!=e.target.dataset.id);
       renderDays();
+      scheduleAutoSave();
     });
   });
 }
@@ -1101,6 +1108,7 @@ function bindDayEvents(){
 document.getElementById('addDay').addEventListener('click', ()=>{
   days.push(newDay('', '', ''));
   renderDays();
+  scheduleAutoSave();
 });
 
 
@@ -1114,6 +1122,7 @@ function setDayCount(n){
     days = days.slice(0, n);
   }
   renderDays();
+  scheduleAutoSave();
 }
 
 const dayCountInputEl = document.getElementById('dayCountInput');
@@ -1283,6 +1292,7 @@ async function saveOrder(){
     const data = collectData();
     await window.storage.set('order:' + code, JSON.stringify(data), true);
     status.textContent = '已保存 · 取件码 ' + code;
+    setUrlCode(code);
   }catch(e){
     status.textContent = '保存失败：请在 Claude 网页 / App 内打开此方案后再试';
   }
@@ -1304,6 +1314,53 @@ async function loadOrderByCode(code){
   }
 }
 
+/* ---------- AUTO-SAVE: keep this exact link always up to date ---------- */
+function setUrlCode(code){
+  try{
+    const url = new URL(window.location.href);
+    url.searchParams.set('order', code);
+    window.history.replaceState({}, '', url);
+  }catch(e){}
+}
+
+let autoSaveTimer = null;
+let autoSaveReady = false; // avoid saving before initial load-from-link finishes
+
+async function autoSave(){
+  if(!autoSaveReady) return;
+  const status = document.getElementById('orderStatus');
+  let code = document.getElementById('orderCode').value.trim();
+  if(!code){
+    code = randCode();
+    document.getElementById('orderCode').value = code;
+  }
+  setUrlCode(code);
+  try{
+    const data = collectData();
+    await window.storage.set('order:' + code, JSON.stringify(data), true);
+    const hh = new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'});
+    status.textContent = '已自动保存 · ' + hh + '（此链接可随时重新打开）';
+  }catch(e){
+    status.textContent = '自动保存失败：请在 Claude 网页 / App 内打开此方案后再试';
+  }
+}
+
+function scheduleAutoSave(){
+  if(!autoSaveReady) return;
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(autoSave, 900);
+}
+
+// catches every text field, textarea and select — including day rows added later
+document.addEventListener('input', e=>{
+  if(e.target.closest('#orderbar') || e.target.closest('.shot-toggle')) return;
+  scheduleAutoSave();
+});
+document.addEventListener('change', e=>{
+  if(e.target.closest('#orderbar') || e.target.closest('.shot-toggle')) return;
+  scheduleAutoSave();
+});
+
 document.getElementById('saveOrderBtn').addEventListener('click', saveOrder);
 document.getElementById('loadOrderBtn').addEventListener('click', ()=>{
   loadOrderByCode(document.getElementById('orderCode').value.trim());
@@ -1313,16 +1370,24 @@ document.getElementById('linkBtn').addEventListener('click', async ()=>{
   if(!code){ await saveOrder(); code = document.getElementById('orderCode').value.trim(); }
   const url = window.location.origin + window.location.pathname + '?order=' + encodeURIComponent(code);
   try{ await navigator.clipboard.writeText(url); }catch(e){}
+  setUrlCode(code);
   document.getElementById('orderStatus').textContent = '专属链接已复制到剪贴板';
 });
 
-(function(){
+(async function(){
   const params = new URLSearchParams(window.location.search);
   const code = params.get('order');
   if(code){
     document.getElementById('orderCode').value = code;
-    loadOrderByCode(code);
+    await loadOrderByCode(code);
+  }else{
+    // brand new session: assign a code up front and write it into the address bar
+    // right away, so this exact link is already save-able before the user clicks anything
+    const newCode = randCode();
+    document.getElementById('orderCode').value = newCode;
+    setUrlCode(newCode);
   }
+  autoSaveReady = true;
 })();
 
 const TZ_OPTIONS = [
