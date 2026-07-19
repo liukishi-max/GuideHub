@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新西兰南岛经典环线 · 定制行程方案</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --navy:#16233F;
+  --navy-2:#223257;
+  --gold:#B98D3E;
+  --gold-soft:#E4C98A;
+  --paper:#F6F1E4;
+  --ink:#201C16;
+  --stamp:#8B3A2B;
+  --line:#D8CBAF;
+  --muted:#8a8168;
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:
+    radial-gradient(rgba(228,201,138,0.10) 1px, transparent 1.4px) 0 0/26px 26px,
+    var(--navy);
+  padding:32px 16px 80px;
+}
+.doc{
+  max-width:640px;
+  margin:0 auto;
+  background:var(--paper);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 30px 60px rgba(0,0,0,0.35);
+}
+/* editable inputs blend into the document */
+input, textarea{
+  font-family:inherit;
+  border:none;
+  background:transparent;
+  color:inherit;
+  width:100%;
+  padding:2px 0;
+}
+input:focus, textarea:focus{
+  outline:none;
+  background:rgba(185,141,62,0.10);
+  border-radius:4px;
+}
+input::placeholder, textarea::placeholder{color:rgba(255,255,255,0.35);}
+.paper input::placeholder, .paper textarea::placeholder{color:#b7ac8e;}
+textarea{resize:none;overflow:hidden;line-height:1.5;}
+
+/* ---------- COVER ---------- */
+.cover{
+  background:var(--navy);
+  color:var(--paper);
+  padding:30px 28px 26px;
+  position:relative;
+  overflow:hidden;
+}
+.cover-art{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
+.cover .eyebrow,
+.cover .dest-input,
+.cover .tagline,
+.cover .chips{
+  position:relative;
+  z-index:1;
+}
+.cover .eyebrow{
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:.28em;
+  color:var(--gold-soft);
+  text-transform:uppercase;
+}
+.cover .dest-input{
+  font-family:'Fraunces',serif;
+  font-weight:700;
+  font-size:38px;
+  margin:10px 0 4px;
+  color:#fff;
+}
+.cover .dest-input::placeholder{color:rgba(255,255,255,0.4);}
+.cover .tagline{
+  font-size:14px;
+  color:#B9C0D4;
+  font-style:italic;
+}
+.visa-stamp{
+  position:absolute;
+  top:26px;right:26px;
+  width:68px;height:68px;
+  border:1.5px dashed rgba(228,201,138,0.55);
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transform:rotate(-10deg);
+  z-index:1;
+  color:var(--gold-soft);
+  font-family:'Space Mono',monospace;
+  text-align:center;
+  line-height:1.25;
+}
+.visa-stamp .top{font-size:7px;letter-spacing:.12em;opacity:.85;}
+.visa-stamp .mid{font-size:13px;font-weight:700;margin:1px 0;}
+.visa-stamp .bot{font-size:6.5px;letter-spacing:.1em;opacity:.75;}
+.cover .flourish{
+  font-size:10px;
+  letter-spacing:.15em;
+  color:var(--gold);
+  opacity:.6;
+  margin-bottom:6px;
+}
+.cover-photo{
+  position:absolute;inset:0;z-index:0;
+  display:none;
+}
+.cover-photo img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.cover-photo-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(22,35,63,.32) 0%, rgba(22,35,63,.55) 55%, rgba(22,35,63,.85) 100%);
+}
+.cover-photo-ctrl{
+  position:relative;z-index:1;
+  display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;
+}
+.mini-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--gold-soft);
+  border:1.5px dashed rgba(228,201,138,0.55);
+  border-radius:16px;padding:6px 12px;
+  cursor:pointer;background:rgba(255,255,255,0.06);
+  font-family:inherit;
+}
+.mini-btn.ghost{border-style:solid;border-color:rgba(228,201,138,0.3);opacity:.8;}
+
+.tz-strip{
+  position:relative;z-index:1;
+  margin-top:14px;
+  display:flex;
+  align-items:stretch;
+  gap:0;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(228,201,138,0.3);
+  border-radius:12px;
+  padding:12px 14px;
+  flex-wrap:wrap;
+}
+.tz-block{flex:1;min-width:120px;}
+.tz-head{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.tz-ic{font-size:12px;color:var(--gold-soft);flex-shrink:0;}
+.tz-label-input{
+  font-size:12px;font-weight:600;color:#fff;
+  min-width:0;
+}
+.tz-zone-select{
+  font-family:inherit;
+  font-size:10.5px;
+  color:var(--gold-soft);
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(228,201,138,0.3);
+  border-radius:6px;
+  padding:2px 4px;
+  margin-bottom:7px;
+  width:100%;
+  max-width:180px;
+}
+.tz-zone-select option{color:#201C16;}
+.tz-time{
+  font-family:'Space Mono',monospace;
+  font-size:23px;font-weight:700;color:#fff;
+  line-height:1.1;
+}
+.tz-date{font-size:10.5px;color:#B9C0D4;margin-top:3px;}
+.tz-diff{
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;
+  font-size:11px;color:var(--gold-soft);
+  text-align:center;
+  padding:0 14px;
+  border-left:1px dashed rgba(228,201,138,0.3);
+  border-right:1px dashed rgba(228,201,138,0.3);
+  white-space:nowrap;
+}
+@media (max-width:480px){
+  .tz-strip{gap:10px;}
+  .tz-diff{
+    order:3;width:100%;
+    border-left:none;border-right:none;
+    border-top:1px dashed rgba(228,201,138,0.3);
+    padding:8px 0 0;margin-top:2px;
+  }
+}
+
+/* ---------- ROUTE OVERVIEW MAP ---------- */
+.route-overview{
+  background:var(--navy);
+  padding:22px 24px 20px;
+  position:relative;
+  overflow:hidden;
+}
+.route-overview .ro-stars{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.route-overview .ro-head{
+  position:relative;z-index:1;
+  text-align:center;margin-bottom:6px;
+}
+.route-overview .ro-title{
+  font-family:'Fraunces',serif;font-weight:700;font-size:19px;color:#fff;
+  letter-spacing:.04em;
+}
+.route-overview .ro-sub{
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.22em;
+  color:var(--gold-soft);text-transform:uppercase;margin-top:2px;
+}
+.route-overview .ro-map-wrap{
+  position:relative;z-index:1;
+  max-width:280px;margin:8px auto 0;
+}
+.route-overview .ro-map-wrap svg{display:block;width:100%;height:auto;}
+.route-overview .ro-legend{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;gap:18px;
+  margin-top:10px;font-size:10.5px;color:#B9C0D4;
+}
+.route-overview .ro-legend span{display:inline-flex;align-items:center;gap:5px;}
+.route-overview .ro-legend .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);display:inline-block;}
+.route-overview .ro-legend .dot.hollow{background:transparent;border:1.5px solid var(--gold-soft);}
+.chips{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+.chip{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(228,201,138,0.35);
+  border-radius:20px;
+  padding:7px 14px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12.5px;
+}
+.chip .ic{color:var(--gold-soft);font-size:13px;}
+.chip input{width:auto;min-width:36px;color:#fff;font-weight:600;text-align:left;}
+
+/* ---------- TIMELINE / DAYS ---------- */
+.days{padding:20px 24px 4px;}
+.day{
+  display:grid;
+  grid-template-columns:44px 1fr;
+  gap:14px;
+  padding-bottom:22px;
+  position:relative;
+}
+.day .rail{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.day .dot{
+  width:34px;height:34px;
+  border-radius:50%;
+  background:var(--navy);
+  color:var(--gold-soft);
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.day .thread{
+  flex:1;
+  width:2px;
+  background:var(--line);
+  margin-top:4px;
+}
+.day:last-of-type .thread{display:none;}
+.day-content{padding-top:2px;}
+.day-title-row{display:flex;align-items:center;gap:8px;}
+.day-icon{
+  font-size:19px;
+  flex-shrink:0;
+  width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(185,141,62,0.12);
+  border-radius:50%;
+}
+.day-title{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:18px;
+  color:var(--ink);
+  flex:1;
+  min-width:0;
+}
+.day-title::placeholder{color:#b7ac8e;}
+.day-geo-row{
+  margin-top:7px;
+  display:flex;
+  gap:6px;
+  align-items:flex-start;
+  font-size:12.5px;
+  color:#6b6248;
+}
+.day-geo-row .field-label{
+  font-weight:700;
+  color:var(--ink);
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.day-geo-row textarea{font-size:12.5px;color:#6b6248;line-height:1.6;min-height:18px;}
+.day-desc-row{
+  margin-top:8px;
+  display:flex;
+  gap:6px;
+  align-items:flex-start;
+  font-size:13px;
+  color:#3a3527;
+}
+.day-desc-row .field-label{
+  font-weight:700;
+  color:var(--ink);
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.day-desc-row textarea{
+  font-size:13px;
+  color:#3a3527;
+  line-height:1.7;
+  min-height:22px;
+}
+.day-photo-wrap{margin-top:10px;}
+.day-photo{
+  position:relative;border-radius:10px;overflow:hidden;
+  border:1px solid var(--line);
+}
+.day-photo img{display:block;width:100%;max-height:220px;object-fit:cover;}
+.rm-photo{
+  position:absolute;top:6px;right:6px;
+  background:rgba(22,35,63,0.65);color:#fff;border:none;
+  width:22px;height:22px;border-radius:50%;cursor:pointer;
+  font-size:13px;line-height:1;
+}
+.add-photo-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;color:#8a6a24;
+  border:1.5px dashed var(--gold);border-radius:8px;
+  padding:7px 12px;cursor:pointer;
+}
+.day-actions{
+  display:flex;justify-content:flex-end;margin-top:6px;
+}
+.rm-day{
+  background:none;border:none;color:var(--stamp);
+  font-size:11px;cursor:pointer;opacity:.55;
+}
+.rm-day:hover{opacity:1;}
+
+.add-day-wrap{padding:0 24px 20px;}
+.add-day{
+  width:100%;
+  padding:10px;
+  border:1.5px dashed var(--gold);
+  background:transparent;
+  color:#8a6a24;
+  border-radius:8px;
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.perf{
+  position:relative;height:0;
+  border-top:2px dashed #C9BB98;
+  margin:0 0 0;
+}
+.perf::before,.perf::after{
+  content:'';position:absolute;top:-11px;
+  width:22px;height:22px;background:var(--navy);border-radius:50%;
+}
+.perf::before{left:-11px;}
+.perf::after{right:-11px;}
+.wave-art{display:block;width:100%;height:20px;background:#EFE7D2;}
+
+/* ---------- PRICE / FOOTER ---------- */
+.pricing{
+  background:#EFE7D2;
+  padding:20px 24px;
+}
+.pricing .row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;
+}
+.pricing .label{font-size:13px;color:var(--muted);display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;}
+.pricing .amt-wrap{display:flex;align-items:center;gap:2px;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;}
+.pricing .amt-wrap input{width:90px;text-align:right;color:var(--ink);font-size:13px;}
+.pricing .row-total{justify-content:flex-start;gap:10px;padding-bottom:4px;}
+.pricing .row-total .label{font-size:13px;}
+.pricing .amt-wrap.total{font-size:21px;font-weight:800;color:var(--ink);}
+.pricing .amt-wrap.total input{width:105px;text-align:left;font-size:21px;font-weight:800;}
+.pricing .sub-label{font-size:11px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px;margin-top:2px;}
+.pricing .now{color:var(--stamp);}
+.pricing .later{color:var(--navy-2);}
+.pricing .rate{font-size:13px;color:var(--muted);}
+
+.incl-excl{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--line);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.incl-excl .col{
+  background:var(--paper);
+  padding:16px 18px;
+}
+.incl-excl label{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;
+  margin-bottom:6px;
+}
+.incl-excl .incl label{color:#5c7a4f;}
+.incl-excl .excl label{color:var(--stamp);}
+.incl-excl .mark{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:15px;height:15px;border-radius:50%;
+  font-size:10px;line-height:1;color:#fff;flex-shrink:0;
+}
+.incl-excl .incl .mark{background:#5c7a4f;}
+.incl-excl .excl .mark{background:var(--stamp);}
+.fee-list{
+  margin:0;padding-left:17px;
+  font-size:12px;color:#4a4430;line-height:1.75;
+}
+.fee-list li{margin-bottom:7px;}
+.fee-list li:last-child{margin-bottom:0;}
+.fee-list input{
+  display:inline;
+  width:auto;
+  min-width:40px;
+  border-bottom:1px dashed var(--gold);
+  padding:0 2px;
+  color:var(--ink);
+  font-weight:600;
+}
+@media (max-width:480px){
+  .incl-excl{grid-template-columns:1fr;}
+}
+
+.notes{
+  padding:16px 24px 4px;
+}
+.notes label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.notes textarea{
+  font-size:12.5px;color:#4a4430;margin-top:4px;min-height:44px;line-height:1.7;
+}
+
+.cta{
+  margin:16px 24px 22px;
+  border:1.5px dashed var(--gold);
+  border-radius:10px;
+  padding:14px;
+  text-align:center;
+  color:#8a6a24;
+}
+.cta-main{font-size:13px;font-weight:600;line-height:1.6;}
+.cta-sub{font-size:11.5px;margin-top:6px;opacity:.8;line-height:1.6;}
+
+.foot-tools{
+  display:flex;gap:10px;
+  padding:0 24px 24px;
+}
+.foot-btn{
+  flex:1;padding:11px;border-radius:8px;border:none;
+  font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;
+}
+.foot-btn.primary{background:var(--navy);color:var(--gold-soft);}
+.foot-btn.primary:hover{background:var(--navy-2);}
+.foot-btn.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+
+.hint{
+  text-align:center;color:#9aa3bd;font-size:11.5px;
+  max-width:640px;margin:14px auto 0;
+}
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--navy);color:var(--gold-soft);
+  padding:10px 18px;border-radius:8px;font-size:13px;
+  font-family:'Space Mono',monospace;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+  z-index:50;
+}
+.toast.show{opacity:1;}
+
+.orderbar{
+  max-width:640px;margin:0 auto 14px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(228,201,138,0.35);
+  border-radius:10px;
+  padding:10px 14px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  color:var(--paper);
+  font-size:12.5px;
+}
+.orderbar input{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(228,201,138,0.25);
+  border-radius:6px;
+  padding:6px 8px;
+  color:#fff;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  width:140px;
+}
+.orderbar button{
+  background:var(--gold);
+  border:none;color:var(--navy);
+  font-weight:700;
+  padding:7px 12px;
+  border-radius:6px;
+  font-size:12px;
+  cursor:pointer;
+  font-family:inherit;
+}
+.orderbar button.ghost{
+  background:transparent;border:1px solid var(--gold-soft);color:var(--gold-soft);
+}
+.orderbar .status{font-size:11px;color:#B9C0D4;}
+</style>
+</head>
+<body>
+
+<div class="orderbar" id="orderbar">
+  <span>取件码：</span>
+  <input type="text" id="orderCode" placeholder="自动生成">
+  <button id="saveOrderBtn">保存这份方案</button>
+  <button class="ghost" id="linkBtn">生成专属链接</button>
+  <button class="ghost" id="loadOrderBtn">按取件码打开</button>
+  <span class="status" id="orderStatus"></span>
+</div>
+<div class="doc" id="doc">
+  <div class="cover">
+    <svg class="cover-art" viewBox="0 0 640 230" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#E4C98A">
+        <circle cx="34" cy="20" r="1.3" opacity=".8"/>
+        <circle cx="76" cy="42" r="1" opacity=".45"/>
+        <circle cx="118" cy="16" r="1.6" opacity=".7"/>
+        <circle cx="168" cy="34" r="1" opacity=".4"/>
+        <circle cx="222" cy="18" r="1.2" opacity=".6"/>
+        <circle cx="266" cy="46" r="1" opacity=".4"/>
+        <circle cx="312" cy="14" r="1.4" opacity=".75"/>
+        <circle cx="368" cy="36" r="1" opacity=".45"/>
+        <circle cx="416" cy="20" r="1.3" opacity=".65"/>
+        <circle cx="462" cy="48" r="1" opacity=".4"/>
+        <circle cx="602" cy="18" r="1.3" opacity=".6"/>
+        <circle cx="628" cy="52" r="1" opacity=".4"/>
+      </g>
+      <circle cx="560" cy="40" r="15" fill="#E4C98A" opacity=".15"/>
+      <circle cx="560" cy="40" r="15" fill="none" stroke="#E4C98A" stroke-width="1" opacity=".5"/>
+      <path d="M0,230 L0,158 L70,104 L128,146 L206,74 L280,152 L344,116 L410,164 L486,90 L556,152 L640,126 L640,230 Z" fill="#1C2C4C" opacity=".65"/>
+      <path d="M0,230 L0,188 L96,140 L176,176 L256,132 L336,182 L416,150 L494,190 L578,158 L640,180 L640,230 Z" fill="#223257" opacity=".9"/>
+    </svg>
+    <div class="cover-photo" id="coverPhoto">
+      <img id="coverPhotoImg" alt="封面图">
+      <div class="cover-photo-overlay"></div>
+    </div>
+    <div class="visa-stamp">
+      <span class="top">NEW ZEALAND</span>
+      <span class="mid">NZ</span>
+      <span class="bot">SOUTH ISLE</span>
+    </div>
+    <div class="eyebrow">Custom Itinerary Proposal</div>
+    <input class="dest-input" id="dest" value="新西兰 · 南岛经典环线">
+    <div class="flourish">✦ ————————</div>
+    <input class="tagline" id="tagline" value="雪山 · 星空 · 峡湾｜4日精华之旅">
+    <div class="chips">
+      <div class="chip"><span class="ic">◆</span>出行人数 <input id="pax" type="text" placeholder="4" style="width:30px"> 人</div>
+      <div class="chip"><span class="ic">◆</span>出发地 <input id="startCity" type="text" placeholder="基督城" style="width:70px"></div>
+      <div class="chip"><span class="ic">◆</span>结束地 <input id="endCity" type="text" placeholder="皇后镇" style="width:70px"></div>
+      <div class="chip"><span class="ic">◆</span>行程天数 <input id="dayCountInput" type="text" inputmode="numeric" value="4" style="width:26px;text-align:center;"> 天</div>
+      <div class="chip"><span class="ic">◆</span>用车 <input id="vehicle" type="text" value="7座自驾/全程司导包车"></div>
+      <div class="chip"><span class="ic">◆</span>出行日期 <input id="tripDate" type="text" placeholder="例如：12月10日-16日" style="width:130px"></div>
+    </div>
+    <div class="tz-strip">
+      <div class="tz-block">
+        <div class="tz-head">
+          <span class="tz-ic">🧭</span>
+          <input id="tzMineLabel" class="tz-label-input" type="text" value="旧金山" placeholder="你的所在城市">
+        </div>
+        <select id="tzMineZone" class="tz-zone-select"></select>
+        <div class="tz-time" id="tzMineTime">--:--</div>
+        <div class="tz-date" id="tzMineDate"></div>
+      </div>
+      <div class="tz-diff" id="tzDiff">时差 --</div>
+      <div class="tz-block">
+        <div class="tz-head">
+          <span class="tz-ic">📍</span>
+          <input id="tzDestLabel" class="tz-label-input" type="text" value="新西兰 · 基督城" placeholder="目的地城市">
+        </div>
+        <select id="tzDestZone" class="tz-zone-select"></select>
+        <div class="tz-time" id="tzDestTime">--:--</div>
+        <div class="tz-date" id="tzDestDate"></div>
+      </div>
+    </div>
+    <div class="cover-photo-ctrl">
+      <label class="mini-btn" for="coverPhotoInput">🖼 上传封面图</label>
+      <input type="file" id="coverPhotoInput" accept="image/*" style="display:none;">
+      <button class="mini-btn ghost" id="coverPhotoRemove" style="display:none;">移除封面图</button>
+    </div>
+  </div>
+
+  <div class="route-overview">
+    <svg class="ro-stars" viewBox="0 0 380 140" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#E4C98A">
+        <circle cx="24" cy="14" r="1.2" opacity=".6"/>
+        <circle cx="70" cy="30" r=".9" opacity=".4"/>
+        <circle cx="120" cy="12" r="1.1" opacity=".55"/>
+        <circle cx="300" cy="16" r="1.2" opacity=".6"/>
+        <circle cx="350" cy="32" r=".9" opacity=".4"/>
+        <circle cx="200" cy="10" r="1" opacity=".5"/>
+      </g>
+    </svg>
+    <div class="ro-head">
+      <div class="ro-title">行程概览</div>
+      <div class="ro-sub">Itinerary Overview · South Island</div>
+    </div>
+    <div class="ro-map-wrap">
+      <svg viewBox="0 0 380 620" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 305,15 C 330,60 340,110 328,160 C 320,200 300,230 315,270 C 325,300 345,290 350,330 C 353,365 330,390 320,430 C 312,460 325,480 315,510 C 305,545 275,560 285,585 C 260,605 220,600 210,575 C 175,585 140,570 130,540 C 100,530 75,505 70,470 C 60,440 75,410 65,385 C 50,365 40,340 55,315 C 68,295 95,300 100,270 C 90,245 70,230 78,205 C 88,178 120,180 128,155 C 118,130 100,110 115,88 C 130,65 165,75 178,55 C 190,32 230,15 260,10 C 275,8 292,5 305,15 Z"
+          fill="rgba(228,201,138,0.06)" stroke="rgba(228,201,138,0.45)" stroke-width="2"/>
+        <g id="roDynamic"></g>
+      </svg>
+    </div>
+    <div class="ro-legend">
+      <span><span class="dot"></span>住宿点（含天数）</span>
+      <span><span class="dot hollow"></span>途经 / 打卡点</span>
+    </div>
+  </div>
+
+  <div class="days" id="days"></div>
+  <div class="add-day-wrap"><button class="add-day" id="addDay">+ 添加一天行程</button></div>
+
+  <div class="perf"></div>
+  <svg class="wave-art" viewBox="0 0 640 26" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,14 C60,4 100,22 160,12 C220,2 260,20 320,10 C380,0 420,18 480,10 C540,2 580,18 640,8" fill="none" stroke="#C9BB98" stroke-width="1.4" opacity=".55"/>
+  </svg>
+
+  <div class="pricing">
+    <div class="row row-total">
+      <div class="label">行程总价</div>
+      <div class="amt-wrap total"><span>¥</span><input id="totalPrice" type="text" value="12800"></div>
+    </div>
+    <div class="sub-label">分批次付款：</div>
+    <div class="row">
+      <div class="label">预付定金<div class="rate">（比例 <input id="depositRate" type="text" value="30" style="width:24px;display:inline;">%）</div></div>
+      <div class="amt-wrap now" id="depositAmt">¥3840</div>
+    </div>
+    <div class="row">
+      <div class="label">出发前 / 抵达后支付尾款</div>
+      <div class="amt-wrap later" id="balanceAmt">¥8960</div>
+    </div>
+  </div>
+
+  <div class="incl-excl">
+    <div class="col incl">
+      <label><span class="mark">✓</span>费用包含</label>
+      <ol class="fee-list">
+        <li>车辆：<input id="seatCount" type="text" value="7" style="width:20px;text-align:center;">座车费（油费、过路费、空返）<input id="carModel" type="text" value="阿尔法、奔驰或同级车型"></li>
+        <li>司导/司机：一名华人司机兼向导服务，司导（小费、餐补、住宿），只提供车上简单介绍/推荐/指引/注意事项，不陪同游览</li>
+        <li>时长：全天包车10小时服务（正常09:00-19:00），半天包车5小时服务</li>
+        <li>接机/送机/单程服务：接机航班实际抵达90分钟免费等待，送机接待时间30分钟免费等待，单程服务接待时间30分钟免费等待</li>
+        <li>服务：<input id="charterDays" type="text" value="4" style="width:26px;text-align:center;">天全天包车</li>
+      </ol>
+    </div>
+    <div class="col excl">
+      <label><span class="mark">✕</span>费用不含</label>
+      <ol class="fee-list">
+        <li>出行人个人消费（餐饮、住宿、门票）</li>
+        <li>当天包车超时：当天按 $50（当地币种）/小时现付司导（当天服务当天结算，超30分钟不足1小时按1小时计算）</li>
+        <li>境外旅游保险（如中国出境强烈建议出境前在国内购买出境游保险，如第三国家出境则在当地国家购买）。中国出境旅游保险可代订，根据险种旅游保险额度单独付费，如不需则默认为客户自行购买</li>
+        <li>费用包含未提及费用</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="notes">
+    <label>温馨提示</label>
+    <textarea id="notesText" placeholder="例如：以上行程可根据天气及个人喜好微调；建议携带轻便衣物及防晒用品。">南岛昼夜温差大，建议携带冲锋衣/抓绒等分层衣物；自驾需持国际驾照翻译认证件；峡湾游船、缆车等热门项目建议提前预约；具体行程可根据天气及路况微调。</textarea>
+  </div>
+
+  <div class="cta">
+    <div class="cta-main">请确认以上行程与报价，回复"确认"后为您发送定金付款链接。</div>
+    <div class="cta-sub">预付定金即为您预留车辆，提前7天安排司导，并为您建立出行服务群哦，预祝旅途愉快！</div>
+  </div>
+
+  <div class="foot-tools">
+    <button class="foot-btn ghost" id="copyBtn">复制文字版</button>
+    <button class="foot-btn primary" id="shotHint">📸 长截图分享提示</button>
+  </div>
+</div>
+
+<p class="hint">封面和每日行程都可以上传自己的照片；填写完成后用手机 / 浏览器的「长截图」功能整页截图，即可发到微信对话框</p>
+<div class="toast" id="toast">已复制到剪贴板</div>
+
+<script>
+let dayCounter = 0;
+let days = [];
+
+function newDay(title, geo, desc, img){
+  dayCounter++;
+  return {
+    id: dayCounter,
+    title: title || '',
+    geo: geo || '',
+    desc: desc || '',
+    img: img || null
+  };
+}
+
+function dayIconText(d){
+  return [d.title, d.geo, d.desc].filter(Boolean).join(' ');
+}
+
+days.push(newDay('皇后镇周边深度游', '皇后镇酒店 - 格林诺奇 (Glenorchy) - 皇后镇', '司导在皇后镇酒店接客人出发，前往"魔戒小镇"格林诺奇。这是一条被誉为世界最美公路之一的路线，沿湖行进，风景极佳。在格林诺奇游览后返回皇后镇，客人可自由活动。'));
+days.push(newDay('皇后镇至特威泽尔 (Twizel) 景观长廊', '皇后镇 - 箭镇 (Arrowtown) - 卡瓦劳蹦极大桥 (Kawarau Bridge) - 瓦纳卡 (Wanaka) - 孤独树 - 迷宫世界 (Puzzling World) - 高山三文鱼场 (Mt Cook Alpine Salmon) - 普卡基湖 (Lake Pukaki) - 特威泽尔 (Twizel)', '一路向北，首先探访历史悠久的箭镇和蹦极发源地。抵达瓦纳卡后，打卡孤独树并体验趣味十足的迷宫世界。下午沿途经高山三文鱼场和湖水如绿松石般璀璨的普卡基湖，最终抵达特威泽尔入住。'));
+days.push(newDay('库克山国家公园与特卡波湖 (Tekapo)', '特威泽尔 (Twizel) - 库克山 (Mt Cook) - 胡克步道 (Hooker Valley Track) - 特卡波湖 (Lake Tekapo) - 好牧羊人教堂 (Church of the Good Shepherd)', '上午前往库克山，根据天气安排冰川直升机观光或胡克步道徒步。下午前往特卡波湖，参观好牧羊人教堂，沉浸在星空小镇的湖光山色中，晚上可在湖畔观星。'));
+days.push(newDay('约翰山与基督城归途', '特卡波 (Tekapo) - 约翰山 (Mt John) Astro咖啡馆 - 费尔利 (Fairlie) 派店 - 基督城 (Christchurch) - 南极中心/柳岸野生动物保护区', '上午登上约翰山顶在Astro咖啡馆俯瞰全景，中途在费尔利小镇品尝新西兰著名的派。下午启程回基督城，若时间充裕，可安排南极中心或柳岸野生动物保护区参观，或进行简单的市区游览。'));
+
+function dayIcon(title){
+  const t = title || '';
+  if(/星空|蒂卡波|特卡波|暗夜|Tekapo/i.test(t)) return '✨';
+  if(/峡湾|米尔福德|游船|Milford/i.test(t)) return '⛵';
+  if(/企鹅|信天翁|但尼丁|Dunedin/i.test(t)) return '🐧';
+  if(/大圆石|摩拉基|Moeraki/i.test(t)) return '🪨';
+  if(/皇后镇|缆车|蹦极|跳伞|Queenstown/i.test(t)) return '🚡';
+  if(/酒庄|品酒/i.test(t)) return '🍷';
+  if(/库克山|雪山|冰川|徒步|观景/i.test(t)) return '🏔️';
+  if(/基督城|花园|抵达/i.test(t)) return '🌷';
+  if(/送机|结束/i.test(t)) return '🛫';
+  return '🧭';
+}
+
+function fileToCompressedDataURL(file, maxW, quality){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = ()=>{
+        let w = img.width, h = img.height;
+        if(w > maxW){ h = Math.round(h * maxW / w); w = maxW; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderDayPhoto(d){
+  const wrap = document.querySelector(`.day-photo-wrap[data-day="${d.id}"]`);
+  if(!wrap) return;
+  wrap.innerHTML = d.img
+    ? `<div class="day-photo"><img src="${d.img}" alt=""><button class="rm-photo" data-id="${d.id}">×</button></div>`
+    : `<label class="add-photo-btn">🖼 添加当日照片<input type="file" accept="image/*" data-id="${d.id}" class="day-photo-input" style="display:none;"></label>`;
+
+  const input = wrap.querySelector('.day-photo-input');
+  if(input){
+    input.addEventListener('change', async e=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      try{
+        const day = days.find(x=>x.id==d.id);
+        day.img = await fileToCompressedDataURL(file, 900, 0.72);
+        renderDayPhoto(day);
+      }catch(err){}
+    });
+  }
+  const rm = wrap.querySelector('.rm-photo');
+  if(rm){
+    rm.addEventListener('click', ()=>{
+      const day = days.find(x=>x.id==d.id);
+      day.img = null;
+      renderDayPhoto(day);
+    });
+  }
+}
+
+let coverImg = null;
+function setCoverPhoto(url){
+  coverImg = url || null;
+  const wrap = document.getElementById('coverPhoto');
+  const img = document.getElementById('coverPhotoImg');
+  const art = document.querySelector('.cover-art');
+  const rmBtn = document.getElementById('coverPhotoRemove');
+  if(coverImg){
+    img.src = coverImg;
+    wrap.style.display = 'block';
+    art.style.display = 'none';
+    rmBtn.style.display = 'inline-flex';
+  }else{
+    wrap.style.display = 'none';
+    art.style.display = 'block';
+    rmBtn.style.display = 'none';
+  }
+}
+document.getElementById('coverPhotoInput').addEventListener('change', async e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    const dataUrl = await fileToCompressedDataURL(file, 1000, 0.75);
+    setCoverPhoto(dataUrl);
+  }catch(err){}
+});
+document.getElementById('coverPhotoRemove').addEventListener('click', ()=> setCoverPhoto(null));
+
+function autoresize(ta){
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+}
+
+const PLACES = {
+  '基督城': {x:300, y:300, label:'基督城'},
+  '蒂卡波': {x:230, y:340, label:'蒂卡波'},
+  '库克山': {x:190, y:300, label:'库克山'},
+  '瓦纳卡': {x:170, y:420, label:'瓦纳卡'},
+  '皇后镇': {x:150, y:460, label:'皇后镇'},
+  '蒂阿瑙': {x:110, y:500, label:'蒂阿瑙'},
+  '米尔福德': {x:85, y:430, label:'米尔福德峡湾'},
+  '但尼丁': {x:250, y:540, label:'但尼丁'},
+  '奥玛鲁': {x:280, y:500, label:'奥玛鲁'},
+  '摩拉基': {x:290, y:460, label:'摩拉基大圆石'},
+  '凯库拉': {x:335, y:150, label:'凯库拉'},
+  '尼尔森': {x:180, y:80, label:'尼尔森'},
+  '皮克顿': {x:290, y:60, label:'皮克顿'},
+  '格雷茅斯': {x:90, y:250, label:'格雷茅斯'},
+  '弗朗兹约瑟夫': {x:75, y:300, label:'弗朗兹约瑟夫冰川'},
+  '福克斯冰川': {x:70, y:320, label:'福克斯冰川'},
+  '特卡波': {x:230, y:340, label:'特卡波'},
+  '特威泽尔': {x:210, y:380, label:'特威泽尔'},
+  '格林诺奇': {x:120, y:440, label:'格林诺奇'},
+  '箭镇': {x:180, y:445, label:'箭镇'},
+  '约翰山': {x:240, y:345, label:'约翰山'}
+};
+
+function extractPlaces(title){
+  const t = title || '';
+  const found = [];
+  Object.keys(PLACES).forEach(key=>{
+    const idx = t.indexOf(key);
+    if(idx !== -1) found.push({key, idx});
+  });
+  found.sort((a,b)=>a.idx-b.idx);
+  const seen = new Set();
+  return found.filter(f=>{
+    if(seen.has(f.key)) return false;
+    seen.add(f.key);
+    return true;
+  }).map(f=>f.key);
+}
+
+function computeDayPlaces(){
+  const raw = days.map(d => extractPlaces((d.geo||'') + ' ' + (d.title||'')));
+  const n = days.length;
+  const effStop = new Array(n).fill(null);
+  const dayWaypoints = new Array(n).fill(null).map(()=>[]);
+  let currentBase = null;
+
+  for(let i=0;i<n;i++){
+    const m = raw[i];
+    if(m.length === 0){
+      effStop[i] = currentBase;
+      continue;
+    }
+    if(m.length === 1){
+      const candidate = m[0];
+      if(candidate === currentBase || currentBase === null){
+        effStop[i] = candidate;
+        currentBase = candidate;
+        continue;
+      }
+      const nextRaw = i+1 < n ? raw[i+1] : [];
+      const returnsToBase = nextRaw.includes(currentBase);
+      if(returnsToBase){
+        dayWaypoints[i] = [candidate];
+        effStop[i] = currentBase;
+      } else {
+        effStop[i] = candidate;
+        currentBase = candidate;
+      }
+      continue;
+    }
+    dayWaypoints[i] = m.slice(0,-1);
+    effStop[i] = m[m.length-1];
+    currentBase = effStop[i];
+  }
+  return {effStop, dayWaypoints};
+}
+
+function renderRouteMap(){
+  const g = document.getElementById('roDynamic');
+  if(!g) return;
+  g.innerHTML = '';
+
+  const {effStop, dayWaypoints} = computeDayPlaces();
+  const pathPts = [];
+  const pushPt = p=>{
+    const last = pathPts[pathPts.length-1];
+    if(!last || last.x !== p.x || last.y !== p.y) pathPts.push(p);
+  };
+  const stops = [];
+  const waypointKeys = new Set();
+
+  days.forEach((d, idx)=>{
+    (dayWaypoints[idx]||[]).forEach(k=>{ waypointKeys.add(k); pushPt(PLACES[k]); });
+    if(effStop[idx]){ pushPt(PLACES[effStop[idx]]); stops.push({dayNum: idx+1, key: effStop[idx]}); }
+  });
+
+  if(stops.length === 0) return;
+
+  const markers = [];
+  stops.forEach(s=>{
+    const last = markers[markers.length-1];
+    if(last && last.key === s.key){ last.days.push(s.dayNum); }
+    else markers.push({key:s.key, days:[s.dayNum]});
+  });
+  const stopKeys = new Set(markers.map(m=>m.key));
+  const byPlace = {};
+  markers.forEach(m=>{
+    const label = m.days.length>1 ? `${m.days[0]}-${m.days[m.days.length-1]}` : `${m.days[0]}`;
+    if(!byPlace[m.key]) byPlace[m.key] = [];
+    byPlace[m.key].push(label);
+  });
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const mk = (tag, attrs, text)=>{
+    const el = document.createElementNS(ns, tag);
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+    if(text != null) el.textContent = text;
+    return el;
+  };
+
+  if(pathPts.length > 1){
+    const d = 'M' + pathPts.map(p=>`${p.x},${p.y}`).join(' L');
+    g.appendChild(mk('path', {d, fill:'none', stroke:'#E4C98A', 'stroke-width':'2', 'stroke-dasharray':'1,7', 'stroke-linecap':'round'}));
+  }
+
+  waypointKeys.forEach(key=>{
+    if(stopKeys.has(key)) return;
+    const p = PLACES[key];
+    g.appendChild(mk('circle', {cx:p.x, cy:p.y, r:4, fill:'none', stroke:'#E4C98A', 'stroke-width':'1.5'}));
+    g.appendChild(mk('text', {x:p.x, y:p.y-10, 'text-anchor':'middle', 'font-size':'12', fill:'#B9C0D4', 'font-family':'Inter,sans-serif'}, p.label));
+  });
+
+  Object.keys(byPlace).forEach(key=>{
+    const p = PLACES[key];
+    const labelText = byPlace[key].join('·');
+    const isLeft = p.x > 190;
+    const grp = mk('g', {});
+    grp.appendChild(mk('circle', {cx:p.x, cy:p.y, r:11, fill:'#B98D3E', stroke:'#F6F1E4', 'stroke-width':'1.5'}));
+    grp.appendChild(mk('text', {x:p.x, y:p.y+4, 'text-anchor':'middle', 'font-size':labelText.length>2?'9':'11', 'font-weight':'700', fill:'#16233F', 'font-family':"'Space Mono',monospace"}, labelText));
+    grp.appendChild(mk('text', {x:p.x + (isLeft?-16:16), y:p.y+4, 'text-anchor':isLeft?'end':'start', 'font-size':'13', 'font-weight':'600', fill:'#fff', 'font-family':'Inter,sans-serif'}, p.label));
+    g.appendChild(grp);
+  });
+}
+
+function renderDays(){
+  const c = document.getElementById('days');
+  c.innerHTML = '';
+  days.forEach((d, idx)=>{
+    const el = document.createElement('div');
+    el.className = 'day';
+    el.innerHTML = `
+      <div class="rail">
+        <div class="dot">D${idx+1}</div>
+        <div class="thread"></div>
+      </div>
+      <div class="day-content">
+        <div class="day-title-row">
+          <span class="day-icon">${dayIcon(dayIconText(d))}</span>
+          <input class="day-title" data-id="${d.id}" data-field="title" value="${d.title}" placeholder="第${idx+1}天概括，例如：皇后镇 → 特威泽尔">
+        </div>
+        <div class="day-geo-row">
+          <span class="field-label">地理地点：</span>
+          <textarea class="day-geo" data-id="${d.id}" data-field="geo" rows="1" placeholder="途经/到达的地理地点，可留空，例如：皇后镇 - 箭镇 - 瓦纳卡">${d.geo || ''}</textarea>
+        </div>
+        <div class="day-desc-row">
+          <span class="field-label">行程描述：</span>
+          <textarea class="day-desc" data-id="${d.id}" data-field="desc" rows="1" placeholder="详细行程描述，可自动换行...">${d.desc || ''}</textarea>
+        </div>
+        <div class="day-photo-wrap" data-day="${d.id}"></div>
+        <div class="day-actions"><button class="rm-day" data-id="${d.id}">删除这一天</button></div>
+      </div>
+    `;
+    c.appendChild(el);
+    renderDayPhoto(d);
+  });
+  const dayCountInput = document.getElementById('dayCountInput');
+  if(document.activeElement !== dayCountInput) dayCountInput.value = days.length;
+  bindDayEvents();
+  renderRouteMap();
+}
+
+function bindDayEvents(){
+  document.querySelectorAll('.day-title').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const day = days.find(x=>x.id==e.target.dataset.id);
+      day[e.target.dataset.field] = e.target.value;
+      const icon = e.target.closest('.day-content').querySelector('.day-icon');
+      if(icon) icon.textContent = dayIcon(dayIconText(day));
+      renderRouteMap();
+    });
+  });
+  document.querySelectorAll('.day-geo').forEach(ta=>{
+    autoresize(ta);
+    ta.addEventListener('input', e=>{
+      const day = days.find(x=>x.id==e.target.dataset.id);
+      day[e.target.dataset.field] = e.target.value;
+      autoresize(e.target);
+      const icon = e.target.closest('.day-content').querySelector('.day-icon');
+      if(icon) icon.textContent = dayIcon(dayIconText(day));
+      renderRouteMap();
+    });
+  });
+  document.querySelectorAll('.day-desc').forEach(ta=>{
+    autoresize(ta);
+    ta.addEventListener('input', e=>{
+      const day = days.find(x=>x.id==e.target.dataset.id);
+      day[e.target.dataset.field] = e.target.value;
+      autoresize(e.target);
+      const icon = e.target.closest('.day-content').querySelector('.day-icon');
+      if(icon) icon.textContent = dayIcon(dayIconText(day));
+    });
+  });
+  document.querySelectorAll('.rm-day').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      days = days.filter(x=>x.id!=e.target.dataset.id);
+      renderDays();
+    });
+  });
+}
+
+document.getElementById('addDay').addEventListener('click', ()=>{
+  days.push(newDay('', '', ''));
+  renderDays();
+});
+
+
+function setDayCount(n){
+  n = Math.max(1, Math.min(30, n || 1));
+  if(n > days.length){
+    while(days.length < n){
+      days.push(newDay('', '', ''));
+    }
+  }else if(n < days.length){
+    days = days.slice(0, n);
+  }
+  renderDays();
+}
+
+const dayCountInputEl = document.getElementById('dayCountInput');
+dayCountInputEl.addEventListener('input', ()=>{
+  dayCountInputEl.value = dayCountInputEl.value.replace(/[^\d]/g, '');
+});
+dayCountInputEl.addEventListener('change', ()=>{
+  const n = parseInt(dayCountInputEl.value, 10);
+  if(!isNaN(n)) setDayCount(n);
+  else dayCountInputEl.value = days.length;
+});
+dayCountInputEl.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    dayCountInputEl.blur();
+  }
+});
+
+function recalcPrice(){
+  const total = parseFloat(document.getElementById('totalPrice').value.replace(/[^\d.]/g,'')) || 0;
+  const rate = parseFloat(document.getElementById('depositRate').value) || 0;
+  const deposit = Math.round(total * rate/100);
+  const balance = Math.round(total - deposit);
+  document.getElementById('depositAmt').innerHTML = '¥' + deposit.toLocaleString('zh-CN');
+  document.getElementById('balanceAmt').textContent = '¥' + balance.toLocaleString('zh-CN');
+}
+document.getElementById('totalPrice').addEventListener('input', recalcPrice);
+document.getElementById('depositRate').addEventListener('input', recalcPrice);
+
+document.getElementById('notesText').addEventListener('input', e=>autoresize(e.target));
+
+function buildText(){
+  const dest = document.getElementById('dest').value || '目的地';
+  const tagline = document.getElementById('tagline').value || '';
+  const pax = document.getElementById('pax').value || '--';
+  const startCity = document.getElementById('startCity').value || '';
+  const endCity = document.getElementById('endCity').value || '';
+  const vehicle = document.getElementById('vehicle').value || '--';
+  const tripDate = document.getElementById('tripDate').value || '待定';
+  const total = document.getElementById('totalPrice').value || '0';
+  const rate = document.getElementById('depositRate').value || '0';
+  const depositTxt = document.getElementById('depositAmt').textContent;
+  const balanceTxt = document.getElementById('balanceAmt').textContent;
+
+  let lines = [];
+  lines.push(`【定制行程方案】${dest}`);
+  if(tagline) lines.push(tagline);
+  lines.push(`出行日期：${tripDate}　人数：${pax}人　用车：${vehicle}`);
+  if(startCity || endCity) lines.push(`出发地：${startCity || '待定'}　结束地：${endCity || '待定'}`);
+  lines.push('——————————');
+  days.forEach((d, idx)=>{
+    lines.push(`Day${idx+1}｜${d.title || '未命名'}`);
+    if(d.geo) lines.push('　地理地点：' + d.geo);
+    if(d.desc) lines.push('　行程描述：' + d.desc);
+  });
+  lines.push('——————————');
+  lines.push(`行程总价：¥${total}`);
+  lines.push(`预付定金（${rate}%）：${depositTxt}`);
+  lines.push(`出发前/抵达后支付尾款：${balanceTxt}`);
+  const carModel = document.getElementById('carModel').value || '';
+  const seatCount = document.getElementById('seatCount').value || '7';
+  const charterDays = document.getElementById('charterDays').value || '';
+  lines.push('');
+  lines.push('费用包含：');
+  lines.push(`1. 车辆：${seatCount}座车费（油费、过路费、空返）${carModel}`);
+  lines.push('2. 司导/司机：一名华人司机兼向导服务，司导（小费、餐补、住宿），只提供车上简单介绍/推荐/指引/注意事项，不陪同游览');
+  lines.push('3. 时长：全天包车10小时服务（正常09:00-19:00），半天包车5小时服务');
+  lines.push('4. 接机/送机/单程服务：接机航班实际抵达90分钟免费等待，送机接待时间30分钟免费等待，单程服务接待时间30分钟免费等待');
+  lines.push(`5. 服务：${charterDays}天全天包车`);
+  lines.push('');
+  lines.push('费用不含：');
+  lines.push('1. 出行人个人消费（餐饮、住宿、门票）');
+  lines.push('2. 当天包车超时：当天按 $50（当地币种）/小时现付司导（当天服务当天结算，超30分钟不足1小时按1小时计算）');
+  lines.push('3. 境外旅游保险（如中国出境强烈建议出境前在国内购买出境游保险，如第三国家出境则在当地国家购买）。中国出境旅游保险可代订，根据险种旅游保险额度单独付费，如不需则默认为客户自行购买');
+  lines.push('4. 费用包含未提及费用');
+  const notes = document.getElementById('notesText').value;
+  if(notes) { lines.push(''); lines.push('温馨提示：' + notes); }
+  lines.push('');
+  lines.push('请确认以上行程与报价，回复"确认"后为您发送定金付款链接。');
+  lines.push('预付定金即为您预留车辆，提前7天安排司导，并为您建立出行服务群哦，预祝旅途愉快！');
+  return lines.join('\n');
+}
+
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  const text = buildText();
+  try{ await navigator.clipboard.writeText(text); }
+  catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  }
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+});
+
+document.getElementById('shotHint').addEventListener('click', ()=>{
+  const t = document.getElementById('toast');
+  t.textContent = 'iPhone：截屏后点预览选"整页" · 安卓：多数机型截屏菜单里有"长截图"';
+  t.classList.add('show');
+  setTimeout(()=>{t.classList.remove('show'); t.textContent='已复制到剪贴板';}, 3200);
+});
+
+
+function randCode(){
+  const dest = (document.getElementById('dest').value||'trip').replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g,'').slice(0,6);
+  const t = Date.now().toString(36).slice(-4);
+  return (dest||'ORD') + '-' + t;
+}
+
+function collectData(){
+  return {
+    dest: document.getElementById('dest').value,
+    tagline: document.getElementById('tagline').value,
+    pax: document.getElementById('pax').value,
+    startCity: document.getElementById('startCity').value,
+    endCity: document.getElementById('endCity').value,
+    vehicle: document.getElementById('vehicle').value,
+    tripDate: document.getElementById('tripDate').value,
+    days: days,
+    totalPrice: document.getElementById('totalPrice').value,
+    depositRate: document.getElementById('depositRate').value,
+    carModel: document.getElementById('carModel').value,
+    seatCount: document.getElementById('seatCount').value,
+    charterDays: document.getElementById('charterDays').value,
+    notes: document.getElementById('notesText').value,
+    coverImg: coverImg,
+    tzMineLabel: document.getElementById('tzMineLabel').value,
+    tzMineZone: document.getElementById('tzMineZone').value,
+    tzDestLabel: document.getElementById('tzDestLabel').value,
+    tzDestZone: document.getElementById('tzDestZone').value
+  };
+}
+
+function applyData(data){
+  document.getElementById('dest').value = data.dest || '';
+  document.getElementById('tagline').value = data.tagline || '';
+  document.getElementById('pax').value = data.pax || '';
+  document.getElementById('startCity').value = data.startCity || '';
+  document.getElementById('endCity').value = data.endCity || '';
+  document.getElementById('vehicle').value = data.vehicle || '';
+  document.getElementById('tripDate').value = data.tripDate || '';
+  document.getElementById('totalPrice').value = data.totalPrice || '';
+  document.getElementById('depositRate').value = data.depositRate || '15';
+  document.getElementById('carModel').value = data.carModel || '阿尔法、奔驰或同级车型';
+  document.getElementById('seatCount').value = data.seatCount || '7';
+  document.getElementById('charterDays').value = data.charterDays || '4';
+  document.getElementById('notesText').value = data.notes || '';
+  days = data.days || days;
+  dayCounter = days.reduce((m,d)=>Math.max(m,d.id),0);
+  renderDays();
+  recalcPrice();
+  autoresize(document.getElementById('notesText'));
+  setCoverPhoto(data.coverImg || null);
+  document.getElementById('tzMineLabel').value = data.tzMineLabel || '旧金山';
+  document.getElementById('tzMineZone').value = data.tzMineZone || 'America/Los_Angeles';
+  document.getElementById('tzDestLabel').value = data.tzDestLabel || '新西兰 · 基督城';
+  document.getElementById('tzDestZone').value = data.tzDestZone || 'Pacific/Auckland';
+  updateClocks();
+}
+
+async function saveOrder(){
+  const status = document.getElementById('orderStatus');
+  let code = document.getElementById('orderCode').value.trim();
+  if(!code){ code = randCode(); document.getElementById('orderCode').value = code; }
+  try{
+    const data = collectData();
+    await window.storage.set('order:' + code, JSON.stringify(data), true);
+    status.textContent = '已保存 · 取件码 ' + code;
+  }catch(e){
+    status.textContent = '保存失败：请在 Claude 网页 / App 内打开此方案后再试';
+  }
+}
+
+async function loadOrderByCode(code){
+  const status = document.getElementById('orderStatus');
+  if(!code) return;
+  try{
+    const res = await window.storage.get('order:' + code, true);
+    if(res && res.value){
+      applyData(JSON.parse(res.value));
+      status.textContent = '已读取 · 取件码 ' + code;
+    }else{
+      status.textContent = '没有找到该取件码对应的方案';
+    }
+  }catch(e){
+    status.textContent = '读取失败：请在 Claude 网页 / App 内打开此方案后再试';
+  }
+}
+
+document.getElementById('saveOrderBtn').addEventListener('click', saveOrder);
+document.getElementById('loadOrderBtn').addEventListener('click', ()=>{
+  loadOrderByCode(document.getElementById('orderCode').value.trim());
+});
+document.getElementById('linkBtn').addEventListener('click', async ()=>{
+  let code = document.getElementById('orderCode').value.trim();
+  if(!code){ await saveOrder(); code = document.getElementById('orderCode').value.trim(); }
+  const url = window.location.origin + window.location.pathname + '?order=' + encodeURIComponent(code);
+  try{ await navigator.clipboard.writeText(url); }catch(e){}
+  document.getElementById('orderStatus').textContent = '专属链接已复制到剪贴板';
+});
+
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('order');
+  if(code){
+    document.getElementById('orderCode').value = code;
+    loadOrderByCode(code);
+  }
+})();
+
+const TZ_OPTIONS = [
+  {tz:'Pacific/Auckland', label:'新西兰 · 奥克兰/基督城'},
+  {tz:'Australia/Sydney', label:'澳大利亚 · 悉尼'},
+  {tz:'Asia/Tokyo', label:'日本 · 东京'},
+  {tz:'Asia/Shanghai', label:'中国 · 北京/上海'},
+  {tz:'Asia/Hong_Kong', label:'中国香港'},
+  {tz:'Asia/Singapore', label:'新加坡'},
+  {tz:'Asia/Dubai', label:'阿联酋 · 迪拜'},
+  {tz:'Europe/London', label:'英国 · 伦敦'},
+  {tz:'Europe/Paris', label:'欧洲中部 · 巴黎/柏林'},
+  {tz:'America/New_York', label:'美国东部 · 纽约'},
+  {tz:'America/Chicago', label:'美国中部 · 芝加哥'},
+  {tz:'America/Denver', label:'美国山地 · 丹佛'},
+  {tz:'America/Los_Angeles', label:'美国西部 · 旧金山/洛杉矶'},
+  {tz:'Pacific/Honolulu', label:'美国 · 夏威夷'}
+];
+
+function populateTzSelect(sel, defaultTz){
+  sel.innerHTML = TZ_OPTIONS.map(o=>`<option value="${o.tz}">${o.label}</option>`).join('');
+  sel.value = defaultTz;
+}
+populateTzSelect(document.getElementById('tzMineZone'), 'America/Los_Angeles');
+populateTzSelect(document.getElementById('tzDestZone'), 'Pacific/Auckland');
+
+function formatTimeInZone(tz){
+  try{
+    const now = new Date();
+    const time = new Intl.DateTimeFormat('zh-CN', {timeZone:tz, hour:'2-digit', minute:'2-digit', hour12:false}).format(now);
+    const date = new Intl.DateTimeFormat('zh-CN', {timeZone:tz, month:'2-digit', day:'2-digit', weekday:'short'}).format(now);
+    return {time, date};
+  }catch(e){
+    return {time:'--:--', date:''};
+  }
+}
+
+function getOffsetMinutes(tz){
+  const now = new Date();
+  try{
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone:tz, hour12:false,
+      year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', second:'2-digit'
+    }).formatToParts(now).reduce((acc,p)=>{ acc[p.type]=p.value; return acc; }, {});
+    const asUTC = Date.UTC(parts.year, parts.month-1, parts.day, parts.hour===24?0:parts.hour, parts.minute, parts.second);
+    return Math.round((asUTC - now.getTime())/60000);
+  }catch(e){
+    return 0;
+  }
+}
+
+function updateClocks(){
+  const mineZone = document.getElementById('tzMineZone').value;
+  const destZone = document.getElementById('tzDestZone').value;
+  const mine = formatTimeInZone(mineZone);
+  const dest = formatTimeInZone(destZone);
+  document.getElementById('tzMineTime').textContent = mine.time;
+  document.getElementById('tzMineDate').textContent = mine.date;
+  document.getElementById('tzDestTime').textContent = dest.time;
+  document.getElementById('tzDestDate').textContent = dest.date;
+
+  const diffRaw = (getOffsetMinutes(destZone) - getOffsetMinutes(mineZone)) / 60;
+  const diffNum = Math.round(diffRaw * 10) / 10;
+  const sign = diffNum > 0 ? '+' : '';
+  document.getElementById('tzDiff').textContent = diffNum === 0 ? '时差 0' : `时差 ${sign}${diffNum}h`;
+}
+
+document.getElementById('tzMineZone').addEventListener('change', updateClocks);
+document.getElementById('tzDestZone').addEventListener('change', updateClocks);
+updateClocks();
+setInterval(updateClocks, 30000);
+
+renderDays();
+recalcPrice();
+</script>
+</body>
+</html>
