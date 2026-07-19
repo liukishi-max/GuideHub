@@ -158,7 +158,7 @@ textarea{resize:none;overflow:hidden;line-height:1.5;}
   padding:12px 14px;
   flex-wrap:wrap;
 }
-.tz-block{flex:1;min-width:120px;}
+.tz-block{flex:1;min-width:120px;display:flex;flex-direction:column;justify-content:center;}
 .tz-head{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
 .tz-ic{font-size:12px;color:var(--gold-soft);flex-shrink:0;}
 .tz-label-input{
@@ -173,24 +173,17 @@ textarea{resize:none;overflow:hidden;line-height:1.5;}
   border:1px solid rgba(228,201,138,0.3);
   border-radius:6px;
   padding:2px 4px;
-  margin-bottom:7px;
   width:100%;
   max-width:180px;
 }
 .tz-zone-select option{color:#201C16;}
-.tz-time{
-  font-family:'Space Mono',monospace;
-  font-size:23px;font-weight:700;color:#fff;
-  line-height:1.1;
-}
-.tz-date{font-size:10.5px;color:#B9C0D4;margin-top:3px;}
 .tz-diff{
   flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
   font-family:'Space Mono',monospace;
-  font-size:11px;color:var(--gold-soft);
+  font-size:15px;font-weight:700;color:var(--gold-soft);
   text-align:center;
-  padding:0 14px;
+  padding:0 16px;
   border-left:1px dashed rgba(228,201,138,0.3);
   border-right:1px dashed rgba(228,201,138,0.3);
   white-space:nowrap;
@@ -585,11 +578,16 @@ body.shot-mode .rm-photo{
 <button class="shot-toggle" id="shotModeToggle" type="button">📸 进入截图模式</button>
 
 <div class="orderbar" id="orderbar">
-  <span>取件码：</span>
-  <input type="text" id="orderCode" placeholder="自动生成">
-  <button id="saveOrderBtn">保存这份方案</button>
-  <button class="ghost" id="linkBtn">生成专属链接</button>
-  <button class="ghost" id="loadOrderBtn">按取件码打开</button>
+  <span class="cloud-group" id="cloudGroup" style="display:contents">
+    <span>取件码：</span>
+    <input type="text" id="orderCode" placeholder="自动生成">
+    <button id="saveOrderBtn">保存这份方案</button>
+    <button class="ghost" id="linkBtn">生成专属链接</button>
+    <button class="ghost" id="loadOrderBtn">按取件码打开</button>
+  </span>
+  <button class="ghost" id="exportBtn" type="button">导出方案文件</button>
+  <button class="ghost" id="importBtn" type="button">导入方案文件</button>
+  <input type="file" id="importInput" accept="application/json" style="display:none;">
   <span class="status" id="orderStatus"></span>
 </div>
 <div class="doc" id="doc">
@@ -642,8 +640,6 @@ body.shot-mode .rm-photo{
           <input id="tzMineLabel" class="tz-label-input" type="text" value="旧金山" placeholder="你的所在城市">
         </div>
         <select id="tzMineZone" class="tz-zone-select"></select>
-        <div class="tz-time" id="tzMineTime">--:--</div>
-        <div class="tz-date" id="tzMineDate"></div>
       </div>
       <div class="tz-diff" id="tzDiff">时差 --</div>
       <div class="tz-block">
@@ -652,8 +648,6 @@ body.shot-mode .rm-photo{
           <input id="tzDestLabel" class="tz-label-input" type="text" value="新西兰 · 基督城" placeholder="目的地城市">
         </div>
         <select id="tzDestZone" class="tz-zone-select"></select>
-        <div class="tz-time" id="tzDestTime">--:--</div>
-        <div class="tz-date" id="tzDestDate"></div>
       </div>
     </div>
     <div class="cover-photo-ctrl">
@@ -1281,11 +1275,37 @@ function applyData(data){
   document.getElementById('tzMineZone').value = data.tzMineZone || 'America/Los_Angeles';
   document.getElementById('tzDestLabel').value = data.tzDestLabel || '新西兰 · 基督城';
   document.getElementById('tzDestZone').value = data.tzDestZone || 'Pacific/Auckland';
-  updateClocks();
+  updateTzDiff();
+}
+
+/* ---------- Does this environment provide Claude's persistent artifact storage? ----------
+   window.storage can be injected slightly after the page's own script runs, so we check
+   live (not just once at load) and give it a short grace period on first load. */
+function cloudStorageAvailable(){
+  return typeof window.storage !== 'undefined' && typeof window.storage.set === 'function';
+}
+function waitForCloudStorage(timeoutMs){
+  return new Promise(resolve=>{
+    if(cloudStorageAvailable()) return resolve(true);
+    const start = Date.now();
+    const timer = setInterval(()=>{
+      if(cloudStorageAvailable()){
+        clearInterval(timer);
+        resolve(true);
+      }else if(Date.now() - start > timeoutMs){
+        clearInterval(timer);
+        resolve(false);
+      }
+    }, 200);
+  });
 }
 
 async function saveOrder(){
   const status = document.getElementById('orderStatus');
+  if(!cloudStorageAvailable()){
+    status.textContent = '此环境暂未连接云端存储，请用"导出方案文件"保存';
+    return;
+  }
   let code = document.getElementById('orderCode').value.trim();
   if(!code){ code = randCode(); document.getElementById('orderCode').value = code; }
   try{
@@ -1301,6 +1321,10 @@ async function saveOrder(){
 async function loadOrderByCode(code){
   const status = document.getElementById('orderStatus');
   if(!code) return;
+  if(!cloudStorageAvailable()){
+    status.textContent = '此环境暂未连接云端存储，请用"导入方案文件"恢复';
+    return;
+  }
   try{
     const res = await window.storage.get('order:' + code, true);
     if(res && res.value){
@@ -1314,7 +1338,44 @@ async function loadOrderByCode(code){
   }
 }
 
-/* ---------- AUTO-SAVE: keep this exact link always up to date ---------- */
+/* ---------- Fallback that works everywhere: export/import a plain JSON file ---------- */
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  try{
+    const data = collectData();
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const destName = (document.getElementById('dest').value || 'itinerary').replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g,'').slice(0,20) || 'itinerary';
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = destName + '-方案.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 2000);
+    document.getElementById('orderStatus').textContent = '已导出方案文件，请妥善保存，下次用"导入方案文件"恢复';
+  }catch(e){
+    document.getElementById('orderStatus').textContent = '导出失败，请重试';
+  }
+});
+document.getElementById('importBtn').addEventListener('click', ()=>{
+  document.getElementById('importInput').click();
+});
+document.getElementById('importInput').addEventListener('change', async e=>{
+  const file = e.target.files[0];
+  e.target.value = '';
+  if(!file) return;
+  const status = document.getElementById('orderStatus');
+  try{
+    const text = await file.text();
+    const data = JSON.parse(text);
+    applyData(data);
+    status.textContent = '已从文件导入方案';
+  }catch(err){
+    status.textContent = '导入失败：文件格式不正确';
+  }
+});
+
+/* ---------- AUTO-SAVE: keep this exact link always up to date (when cloud storage exists) ---------- */
 function setUrlCode(code){
   try{
     const url = new URL(window.location.href);
@@ -1327,7 +1388,7 @@ let autoSaveTimer = null;
 let autoSaveReady = false; // avoid saving before initial load-from-link finishes
 
 async function autoSave(){
-  if(!autoSaveReady) return;
+  if(!autoSaveReady || !cloudStorageAvailable()) return;
   const status = document.getElementById('orderStatus');
   let code = document.getElementById('orderCode').value.trim();
   if(!code){
@@ -1366,6 +1427,10 @@ document.getElementById('loadOrderBtn').addEventListener('click', ()=>{
   loadOrderByCode(document.getElementById('orderCode').value.trim());
 });
 document.getElementById('linkBtn').addEventListener('click', async ()=>{
+  if(!cloudStorageAvailable()){
+    document.getElementById('orderStatus').textContent = '此环境暂未连接云端存储，请用"导出方案文件"保存';
+    return;
+  }
   let code = document.getElementById('orderCode').value.trim();
   if(!code){ await saveOrder(); code = document.getElementById('orderCode').value.trim(); }
   const url = window.location.origin + window.location.pathname + '?order=' + encodeURIComponent(code);
@@ -1375,6 +1440,14 @@ document.getElementById('linkBtn').addEventListener('click', async ()=>{
 });
 
 (async function(){
+  const status = document.getElementById('orderStatus');
+  // give window.storage up to 3s to become available (some hosts inject it slightly
+  // after the page's own scripts start running)
+  const ok = await waitForCloudStorage(3000);
+  if(!ok){
+    status.textContent = '提示：当前页面暂未连接云端存储，可先用"导出/导入方案文件"保存与恢复进度';
+    return;
+  }
   const params = new URLSearchParams(window.location.search);
   const code = params.get('order');
   if(code){
@@ -1414,17 +1487,6 @@ function populateTzSelect(sel, defaultTz){
 populateTzSelect(document.getElementById('tzMineZone'), 'America/Los_Angeles');
 populateTzSelect(document.getElementById('tzDestZone'), 'Pacific/Auckland');
 
-function formatTimeInZone(tz){
-  try{
-    const now = new Date();
-    const time = new Intl.DateTimeFormat('zh-CN', {timeZone:tz, hour:'2-digit', minute:'2-digit', hour12:false}).format(now);
-    const date = new Intl.DateTimeFormat('zh-CN', {timeZone:tz, month:'2-digit', day:'2-digit', weekday:'short'}).format(now);
-    return {time, date};
-  }catch(e){
-    return {time:'--:--', date:''};
-  }
-}
-
 function getOffsetMinutes(tz){
   const now = new Date();
   try{
@@ -1440,26 +1502,18 @@ function getOffsetMinutes(tz){
   }
 }
 
-function updateClocks(){
+function updateTzDiff(){
   const mineZone = document.getElementById('tzMineZone').value;
   const destZone = document.getElementById('tzDestZone').value;
-  const mine = formatTimeInZone(mineZone);
-  const dest = formatTimeInZone(destZone);
-  document.getElementById('tzMineTime').textContent = mine.time;
-  document.getElementById('tzMineDate').textContent = mine.date;
-  document.getElementById('tzDestTime').textContent = dest.time;
-  document.getElementById('tzDestDate').textContent = dest.date;
-
   const diffRaw = (getOffsetMinutes(destZone) - getOffsetMinutes(mineZone)) / 60;
   const diffNum = Math.round(diffRaw * 10) / 10;
   const sign = diffNum > 0 ? '+' : '';
   document.getElementById('tzDiff').textContent = diffNum === 0 ? '时差 0小时' : `时差 ${sign}${diffNum}小时`;
 }
 
-document.getElementById('tzMineZone').addEventListener('change', updateClocks);
-document.getElementById('tzDestZone').addEventListener('change', updateClocks);
-updateClocks();
-setInterval(updateClocks, 30000);
+document.getElementById('tzMineZone').addEventListener('change', updateTzDiff);
+document.getElementById('tzDestZone').addEventListener('change', updateTzDiff);
+updateTzDiff();
 
 renderDays();
 recalcPrice();
