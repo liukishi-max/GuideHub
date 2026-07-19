@@ -409,9 +409,9 @@ textarea{resize:none;overflow:hidden;line-height:1.5;}
 .pricing .amt-wrap{display:flex;align-items:center;gap:2px;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;}
 .pricing .amt-wrap input{width:90px;text-align:right;color:var(--ink);font-size:13px;}
 .pricing .row-total{justify-content:flex-start;gap:10px;padding-bottom:4px;}
-.pricing .row-total .label{font-size:13px;}
-.pricing .amt-wrap.total{font-size:21px;font-weight:800;color:var(--ink);}
-.pricing .amt-wrap.total input{width:105px;text-align:left;font-size:21px;font-weight:800;}
+.pricing .row-total .label{font-size:13.5px;font-weight:700;color:var(--ink);}
+.pricing .amt-wrap.total{font-size:23px;font-weight:900;color:var(--ink);}
+.pricing .amt-wrap.total input{width:110px;text-align:left;font-size:23px;font-weight:900;}
 .pricing .sub-label{font-size:11px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px;margin-top:2px;}
 .pricing .now{color:var(--stamp);}
 .pricing .later{color:var(--navy-2);}
@@ -545,9 +545,44 @@ textarea{resize:none;overflow:hidden;line-height:1.5;}
   background:transparent;border:1px solid var(--gold-soft);color:var(--gold-soft);
 }
 .orderbar .status{font-size:11px;color:#B9C0D4;}
+
+/* ---------- SHOT MODE (long-screenshot toggle) ---------- */
+.shot-toggle{
+  position:fixed;
+  right:16px;bottom:16px;
+  z-index:999;
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--navy);
+  color:var(--gold-soft);
+  border:1.5px solid var(--gold);
+  border-radius:20px;
+  padding:9px 14px;
+  font-size:12.5px;
+  font-weight:600;
+  font-family:inherit;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,0.35);
+}
+.shot-toggle.active{
+  background:var(--stamp);
+  border-color:var(--stamp);
+  color:#fff;
+}
+body.shot-mode .orderbar,
+body.shot-mode .cover-photo-ctrl,
+body.shot-mode .day-actions,
+body.shot-mode .add-day-wrap,
+body.shot-mode .foot-tools,
+body.shot-mode .hint,
+body.shot-mode .add-photo-btn,
+body.shot-mode .rm-photo{
+  display:none !important;
+}
 </style>
 </head>
 <body>
+
+<button class="shot-toggle" id="shotModeToggle" type="button">📸 进入截图模式</button>
 
 <div class="orderbar" id="orderbar">
   <span>取件码：</span>
@@ -1353,7 +1388,7 @@ function updateClocks(){
   const diffRaw = (getOffsetMinutes(destZone) - getOffsetMinutes(mineZone)) / 60;
   const diffNum = Math.round(diffRaw * 10) / 10;
   const sign = diffNum > 0 ? '+' : '';
-  document.getElementById('tzDiff').textContent = diffNum === 0 ? '时差 0' : `时差 ${sign}${diffNum}h`;
+  document.getElementById('tzDiff').textContent = diffNum === 0 ? '时差 0小时' : `时差 ${sign}${diffNum}小时`;
 }
 
 document.getElementById('tzMineZone').addEventListener('change', updateClocks);
@@ -1363,6 +1398,13 @@ setInterval(updateClocks, 30000);
 
 renderDays();
 recalcPrice();
+
+const shotModeToggle = document.getElementById('shotModeToggle');
+shotModeToggle.addEventListener('click', ()=>{
+  const on = document.body.classList.toggle('shot-mode');
+  shotModeToggle.textContent = on ? '✕ 退出截图模式' : '📸 进入截图模式';
+  shotModeToggle.classList.toggle('active', on);
+});
 </script>
 </body>
 </html>
