@@ -568,7 +568,8 @@ body.shot-mode .add-day-wrap,
 body.shot-mode .foot-tools,
 body.shot-mode .hint,
 body.shot-mode .add-photo-btn,
-body.shot-mode .rm-photo{
+body.shot-mode .rm-photo,
+body.shot-mode .shot-toggle{
   display:none !important;
 }
 </style>
@@ -1519,11 +1520,21 @@ renderDays();
 recalcPrice();
 
 const shotModeToggle = document.getElementById('shotModeToggle');
-shotModeToggle.addEventListener('click', ()=>{
-  const on = document.body.classList.toggle('shot-mode');
+function setShotMode(on){
+  document.body.classList.toggle('shot-mode', on);
   shotModeToggle.textContent = on ? '✕ 退出截图模式' : '📸 进入截图模式';
   shotModeToggle.classList.toggle('active', on);
+}
+shotModeToggle.addEventListener('click', ()=>{
+  setShotMode(!document.body.classList.contains('shot-mode'));
 });
+// the toggle button itself is hidden while shot-mode is on (so it never appears in the
+// screenshot) — double-tap/double-click anywhere on the page to exit shot mode again.
+// Refreshing the page also exits shot mode; your content is auto-saved.
+document.addEventListener('dblclick', ()=>{
+  if(document.body.classList.contains('shot-mode')) setShotMode(false);
+});
+
 </script>
 </body>
 </html>
